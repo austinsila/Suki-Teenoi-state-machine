@@ -146,7 +146,7 @@ while current_index < len(delivery_queue):
     else:
         state = transition("all_tables_done", state)
 
-# ---------- Step 4: กลับครัว ----------
+# Step 4: กลับครัว
 input("\nPress Enter when robot arrives back at kitchen:")
 state = transition("arrived_at_kitchen", state)
 
