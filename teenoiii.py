@@ -150,6 +150,6 @@ while current_index < len(delivery_queue):
 input("\nPress Enter when robot arrives back at kitchen:")
 state = transition("arrived_at_kitchen", state)
 
-print("\nDELIVERY COMPLETE! Robot is back on standby.")
+print("\nDelivery Complete! Robot is back on standby.")
 
 
