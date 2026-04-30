@@ -22,17 +22,17 @@ def get_table_location(table_id):
 # Define actions for each state
 def show_state_action(state):
     if state == "IDLE":
-        print("[ACTION] Robot is on standby at the kitchen. Waiting for staff.")
+        print("[ACTION] Robot standby at kitchen. Wait for staff.")
     elif state == "LOADING":
-        print("[ACTION] Staff is placing food on trays and assigning table IDs.")
+        print("[ACTION] Staff place food on trays and assign table IDs.")
     elif state == "NAVIGATING":
-        print("[ACTION] Robot is moving to the next table using the restaurant map.")
+        print("[ACTION] Robot is moving to the next table.")
     elif state == "AVOIDING_OBSTACLE":
         print("[ACTION] Obstacle detected! Robot stops and finds an alternate path.")
     elif state == "NOTIFYING":
-        print("[ACTION] Robot has arrived! Playing sound + showing tray info on screen.")
-    elif state == "WAITING_FOR_CUSTOMER":
-        print("[ACTION] Waiting for customer to take food and press [Received] button.")
+        print("[ACTION] Robot has arrived! Play sound + show tray info on screen.")
+    elif state == "WAIT_FOR_CUSTOMER":
+        print("[ACTION] Wait for customer to take food and press [Received] button.")
     elif state == "CHECKING_TRAYS":
         print("[ACTION] Checking if more tables are in the delivery queue.")
     elif state == "RETURNING":
@@ -54,9 +54,9 @@ def transition(event, state):
         next_state = "AVOIDING_OBSTACLE"
     elif event == "path_cleared" and state == "AVOIDING_OBSTACLE":
         next_state = "NAVIGATING"
-    elif event == "notification_sent" and state == "NOTIFYING":
-        next_state = "WAITING_FOR_CUSTOMER"
-    elif event == "food_received_pressed" and state == "WAITING_FOR_CUSTOMER":
+    elif event == "noti_sent" and state == "NOTIFYING":
+        next_state = "WAIT_FOR_CUSTOMER"
+    elif event == "food_received_pressed" and state == "WAIT_FOR_CUSTOMER":
         next_state = "CHECKING_TRAYS"
     elif event == "more_tables_remain" and state == "CHECKING_TRAYS":
         next_state = "NAVIGATING"
@@ -133,7 +133,7 @@ while current_index < len(delivery_queue):
         state = transition("path_cleared", state)
 
     state = transition("arrived_at_table", state)
-    state = transition("notification_sent", state)
+    state = transition("noti_sent", state)
 
     print(f"\nScreen: 'Table {order['table']} — Your {order['food']} is on Tray {order['tray']}!'")
     input("Customer: Press Enter to receive food:")
@@ -146,10 +146,10 @@ while current_index < len(delivery_queue):
     else:
         state = transition("all_tables_done", state)
 
-# Step 4: กลับครัว
+# ---------- Step 4: กลับครัว ----------
 input("\nPress Enter when robot arrives back at kitchen:")
 state = transition("arrived_at_kitchen", state)
 
-print("\nDelivery Complete! Robot is back on standby.")
+print("\nDELIVERY COMPLETE! Robot is back on standby.")
 
 
